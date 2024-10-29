@@ -1,11 +1,20 @@
 import sqlite3
+from datetime import datetime
 
 import click
 from flask import current_app, g
 
 
+# Define a custom converter function for timestamps
+def parse_timestamp(value):
+    return datetime.strptime(value.decode("utf-8"), "%Y-%m-%d %H:%M:%S")
+
+
 def get_db():
     if 'db' not in g:
+        # Register the custom timestamp converter
+        sqlite3.register_converter("timestamp", parse_timestamp)
+
         g.db = sqlite3.connect(
             current_app.config['DATABASE'],
             detect_types=sqlite3.PARSE_DECLTYPES
