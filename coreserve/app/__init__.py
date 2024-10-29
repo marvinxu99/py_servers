@@ -2,9 +2,10 @@
 
 from flask import Flask
 from .extensions import db, migrate
-from .routes import api_bp
+from .routes.api import api_bp
 
-def create_app(config_class="config.Config"):
+
+def create_app(config_class="app.config.Config"):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
